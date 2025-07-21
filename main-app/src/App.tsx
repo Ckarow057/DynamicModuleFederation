@@ -52,7 +52,6 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [remoteApps, setRemoteApps] = useState<any[]>([]);
 
-  // Load remote apps on component mount
   useEffect(() => {
     loadRemoteApps();
   }, []);
@@ -66,12 +65,11 @@ function App() {
 
   const handleCycleRemote = () => {
     cycleToNextRemote();
-    setCurrentRemoteKey(prev => prev + 1);  // Force re-render with new key
+    setCurrentRemoteKey(prev => prev + 1);
   };
 
   const handleRefreshRemoteApps = async () => {
     await loadRemoteApps();
-    // Reset to first remote app
     currentConfigIndex = 0;
     setCurrentRemoteKey(prev => prev + 1);
   };

@@ -11,8 +11,6 @@ export default defineConfig({
       filename: "remoteEntry.js",
       exposes: {
         "./remote2Root": "./src/App.tsx",
-        // "./remote2Component": "./src/components/remoteHeader.tsx",
-
       },
       shared: ["react", "react-dom"],
     }),
