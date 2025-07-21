@@ -1,53 +1,12 @@
-import React, { lazy, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import './App.css'
 
-import {
-  __federation_method_getRemote,
-  __federation_method_setRemote,
-  // @ts-ignore
-} from "__federation__";
-
-let imports: any[] = [];
-let currentConfigIndex = 0;
-
-async function fetchRemoteApps() {
-  try {
-    const res = await fetch('http://localhost:3000/all');
-    const data = await res.json();
-    imports = data.rows;
-    return imports;
-  } catch (error) {
-    console.error('Failed to fetch remote apps:', error);
-    return [];
-  }
-}
-
-function UseFeatureFlagsOrSomethingCoolToGetRemote() {
-  const remoteConfig = imports[currentConfigIndex];
-  return remoteConfig;
-}
-
-function cycleToNextRemote() {
-  currentConfigIndex = (currentConfigIndex + 1) % imports.length;
-}
-
-function createDynamicRemoteApp() {
-  return lazy(() => {
-    const { url, name, module } = UseFeatureFlagsOrSomethingCoolToGetRemote();
-
-    __federation_method_setRemote(name, {
-      url: () => Promise.resolve(url),
-      format: "esm",
-      from: "vite",
-    });
-
-    return __federation_method_getRemote(name, module);
-  });
-}
-
+import { fetchRemoteApps, createDynamicRemoteApp } from "./utils/app_utils";
 
 function App() {
+  const [imports, setImports] = useState<any[]>([]);
+  const [currentConfigIndex, setCurrentConfigIndex] = useState(0);
   const [currentRemoteKey, setCurrentRemoteKey] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [remoteApps, setRemoteApps] = useState<any[]>([]);
@@ -59,22 +18,24 @@ function App() {
   const loadRemoteApps = async () => {
     setIsLoading(true);
     const apps = await fetchRemoteApps();
+    setImports(apps);
     setRemoteApps(apps);
     setIsLoading(false);
   };
 
   const handleCycleRemote = () => {
-    cycleToNextRemote();
+    const nextIndex = (currentConfigIndex + 1) % imports.length;
+    setCurrentConfigIndex(nextIndex);
     setCurrentRemoteKey(prev => prev + 1);
   };
 
   const handleRefreshRemoteApps = async () => {
     await loadRemoteApps();
-    currentConfigIndex = 0;
+    setCurrentConfigIndex(0);
     setCurrentRemoteKey(prev => prev + 1);
   };
 
-  const DynamicRemoteApp = createDynamicRemoteApp();
+  const DynamicRemoteApp = createDynamicRemoteApp(imports, currentConfigIndex);
 
   if (isLoading) {
     return <div>Loading remote applications...</div>;
