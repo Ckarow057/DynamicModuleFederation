@@ -8,7 +8,7 @@ import {
 
 export async function fetchRemoteApps() {
     try {
-        const res = await fetch('http://localhost:3000/all');
+        const res = await fetch('http://localhost:3000/all'); // Connect to your backend service and query that grabs remote app info
         const data = await res.json();
         return data.rows;
     } catch (error) {

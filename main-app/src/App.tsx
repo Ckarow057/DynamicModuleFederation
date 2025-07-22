@@ -58,7 +58,7 @@ function App() {
 
       <React.Suspense fallback="Loading">
         <Routes>
-          <Route path="/" element={<DynamicRemoteApp key={currentRemoteKey} />} />
+          <Route path="/*" element={<DynamicRemoteApp key={currentRemoteKey} />} />
         </Routes>
       </React.Suspense>
     </div>

@@ -79,22 +79,23 @@ This demo showcases a micro-frontend architecture with:
    npm run setup  # This populates the database and starts the server
    ```
 
-4. **Start the remote applications** (in separate terminals)
+4. **Start the remote applications** (in separate terminals) 
    ```bash
+   # Run all on preview. The remoteEntry.js file does not appear if you run it in dev
    # Terminal 1
-   cd remote-app-1 && npm run dev  # Runs on port 9000
+   cd remote-app-1 && npm run preview  # Runs on port 9000
    
    # Terminal 2  
-   cd remote-app-2 && npm run dev  # Runs on port 9001
+   cd remote-app-2 && npm run preview  # Runs on port 9001
    
    # Terminal 3
-   cd remote-app-3 && npm run dev  # Runs on port 9002
+   cd remote-app-3 && npm run preview  # Runs on port 9002
    
    # Terminal 4
-   cd remote-app-4 && npm run dev  # Runs on port 9003
+   cd remote-app-4 && npm run preview  # Runs on port 9003
    
    # Terminal 5
-   cd remote-app-5 && npm run dev  # Runs on port 9004
+   cd remote-app-5 && npm run preview  # Runs on port 9004
    ```
 
 5. **Start the main application**
